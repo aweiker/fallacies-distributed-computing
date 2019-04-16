@@ -86,12 +86,11 @@ Of course nobody would make this mistake and assume that the internet is a frien
 - Classify data and capabilities
 - Authenticate and Authorize remote calls
 - Encrypt in transit and at rest
-- Utilize a sercice mesh
+- Utilize a service mesh
 
 ### 4b. Examples
 
 - Istio
-
 
 ## Sources
 
