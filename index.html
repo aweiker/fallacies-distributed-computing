@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <title>Understanding - Fallacies of Distributed Computing (1-4)</title>
+        <title>Reviewing - Fallacies of Distributed Computing (1-4)</title>
 
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/reveal.css">
@@ -33,7 +33,9 @@
                     </p>
                 </section>
                 <section>
-                    <ol>
+                    <h3>The Eight Fallacies</h3>
+                    <div>
+                    <ol style="font-size: 0.6em; display: block">
                         <li>The network is reliable</li>
                         <li>Latency is zero</li>
                         <li>Bandwidth is infinite</li>
@@ -43,6 +45,10 @@
                         <li class="fragment fade-out" data-fragment-index="1">Transport cost is zero</li>
                         <li class="fragment fade-out" data-fragment-index="1">The network is homogeneous</li>
                     </ol>
+                    <q style="font-size: 0.5em; display: block" cite="https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing">
+                        - L. Peter Deutsch and James Gosling circa 1994-1997
+                    </q>
+                </div>
                 </section>
                 <section>
                     <section>
@@ -90,27 +96,36 @@
                     <section>
                         <h2>Latency is zero</h2>
                         <ul>
-                            <li class="fragment fade-in">Internet</li>
-                            <li class="fragment fade-in">WAN</li>
-                            <li class="fragment fade-in">LAN</li>
-                            <li class="fragment fade-in">Process</li>
+                            <li>Internet</li>
+                            <li>WAN</li>
+                            <li>LAN</li>
+                            <li>Process</li>
                         </ul>
                         <aside class="notes">
                             When communicating from one process to another, assuming that this call will not
                             introduce any additional overhead.
-
-                            This fallacy often comes into play when using a framework that adds a layer of
-                            abstraction. For example RPC and ORM are two common places where the developer
-                            writes code in a way that makes it appear like one line of code is locally executed,
-                            wherein it actually has to make a remote call. When this happens the liklihood of a
-                            N+1 Select problem significantly increases as the boundary between remote and
-                            local has been blurred.
 
                             With the popularity of microservices, this has also caused issues when dealing
                             with HTTP/S connections. While the overhead of establishing an HTTP connection
                             can seem to be quick, this is added latency to requests that can quickly add
                             up to noticeable amounts of time. Not to mention that there is a finite limit
                             to the number of connections that can be open at a time.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Latency is zero</h2>
+                        <h3>Bad Behaviours</h3>
+                        <ul>
+                            <li>N+1</li>
+                            <li>Distributed Objects</li>
+                        </ul>
+                        <aside class="notes">
+                            This fallacy often comes into play when using a framework that adds a layer of
+                            abstraction. For example RPC and ORM are two common places where the developer
+                            writes code in a way that makes it appear like one line of code is locally executed,
+                            wherein it actually has to make a remote call. When this happens the liklihood of a
+                            N+1 Select problem significantly increases as the boundary between remote and
+                            local has been blurred.
                         </aside>
                     </section>
                     <section>
@@ -123,10 +138,10 @@
                             <li>HTTP/2</li>
                         </ul>
                         <aside class="notes">
-                            - **Resource Pool**: In process cache of expensive resources, such as connections to a dataaase. Allowing a resource from cache to be used instead of creating a new one each time it is needed.
-                            - **Request Cache**: In process cache of requests to prevent duplicate requests for the same data (in a single logical operation) from being sent multiple times.
-                            - **Request Collapsing(Batching)**: Where possible, instead of making N requests, combine those requests so that only 1 request is made.
-                            - **HTTP/2**: Allows more effecient use of connections by allowing the server to push data down and not rely on clients to establish new connections.
+                            <b>Resource Pool</b> In process cache of expensive resources, such as connections to a dataaase. Allowing a resource from cache to be used instead of creating a new one each time it is needed.
+                            <b>Request Cache</b> In process cache of requests to prevent duplicate requests for the same data (in a single logical operation) from being sent multiple times.
+                            <b>Request Collapsing(Batching)</b>: Where possible, instead of making N requests, combine those requests so that only 1 request is made.
+                            <b>HTTP/2</b>: Allows more effecient use of connections by allowing the server to push data down and not rely on clients to establish new connections.
 
                             When writing code, be cautious when creating functions that wrap remote calls. If doing this, please naem functions in a way so that it is obvious that a remote call is/may take place.
                         </aside>
@@ -135,6 +150,9 @@
                         <h2>Latency is zero</h2>
                         <h3>Hystrix Example</h3>
                         <img src="images/hystrix-command-flow-chart.png" />
+                        <aside class="notes">
+                            Request Caching and and Request Collapsing are natively supported.
+                        </aside>
                     </section>
                 </section>
                 <section>
